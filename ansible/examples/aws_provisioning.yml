@@ -1,0 +1,39 @@
+---
+# Run: ansible-playbook examples/aws_provisioning.yml -i inventory.ini
+# Requires: amazon.aws collection and IAM permissions for EC2, VPC, subnet, security group.
+- name: Provision AWS networking resources
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Create VPC
+      amazon.aws.ec2_vpc_net:
+        name: demo-vpc
+        cidr_block: 10.0.0.0/16
+        region: us-east-1
+        state: present
+      register: vpc
+
+    - name: Create subnet
+      amazon.aws.ec2_subnet:
+        vpc_id: "{{ vpc.vpc.id }}"
+        cidr: 10.0.0.0/24
+        region: us-east-1
+        state: present
+        map_public: true
+
+    - name: Create security group
+      amazon.aws.ec2_security_group:
+        name: demo-sg
+        description: Demo security group
+        region: us-east-1
+        vpc_id: "{{ vpc.vpc.id }}"
+        rules:
+          - proto: tcp
+            ports:
+              - 22
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            ports:
+              - 80
+            cidr_ip: 0.0.0.0/0

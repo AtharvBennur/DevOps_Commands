@@ -1,0 +1,15 @@
+---
+# Run: ansible-playbook examples/setup_docker.yml -i inventory.ini
+- name: Install Docker on Ubuntu hosts
+  hosts: webservers
+  become: true
+  tasks:
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+        state: present
+        update_cache: true

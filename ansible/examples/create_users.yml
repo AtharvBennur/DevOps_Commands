@@ -1,0 +1,24 @@
+---
+# Run: ansible-playbook examples/create_users.yml -i inventory.ini
+- name: Create application users
+  hosts: all
+  become: true
+  vars:
+    app_users:
+      - appuser
+      - deployer
+  tasks:
+    - name: Ensure groups exist
+      ansible.builtin.group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - appuser
+        - deployer
+
+    - name: Ensure users exist
+      ansible.builtin.user:
+        name: "{{ item }}"
+        state: present
+        shell: /bin/bash
+      loop: "{{ app_users }}"

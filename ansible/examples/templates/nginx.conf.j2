@@ -1,0 +1,6 @@
+server {
+    listen {{ nginx_port }};
+    server_name {{ inventory_hostname }};
+    root {{ web_root }};
+    index index.html;
+}

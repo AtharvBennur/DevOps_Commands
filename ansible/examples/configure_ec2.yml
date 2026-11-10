@@ -1,0 +1,22 @@
+---
+# Run: ansible-playbook examples/configure_ec2.yml -i inventory.ini
+# Requires: amazon.aws collection and IAM permissions for EC2 actions.
+- name: Create a basic EC2 instance
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    region: us-east-1
+    instance_name: demo-web
+  tasks:
+    - name: Launch EC2 instance
+      amazon.aws.ec2_instance:
+        region: "{{ region }}"
+        key_name: my-key
+        instance_type: t3.micro
+        image_id: ami-12345678
+        vpc_subnet_id: subnet-12345678
+        security_group: sg-12345678
+        wait: true
+        tags:
+          Name: "{{ instance_name }}"

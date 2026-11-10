@@ -1,0 +1,11 @@
+---
+# Run: ansible-playbook examples/manage_services.yml -i inventory.ini
+- name: Manage service states
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure nginx is started
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true

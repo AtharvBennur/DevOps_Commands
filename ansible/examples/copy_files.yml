@@ -1,0 +1,11 @@
+---
+# Run: ansible-playbook examples/copy_files.yml -i inventory.ini
+- name: Copy application config
+  hosts: webservers
+  become: true
+  tasks:
+    - name: Copy config file
+      ansible.builtin.copy:
+        src: ./files/app.conf
+        dest: /etc/myapp/app.conf
+        mode: '0644'

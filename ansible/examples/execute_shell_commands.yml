@@ -1,0 +1,13 @@
+---
+# Run: ansible-playbook examples/execute_shell_commands.yml -i inventory.ini
+- name: Execute shell commands
+  hosts: all
+  become: true
+  tasks:
+    - name: Print OS details
+      ansible.builtin.shell: cmd="uname -a"
+      register: os_info
+
+    - name: Show output
+      ansible.builtin.debug:
+        var: os_info.stdout

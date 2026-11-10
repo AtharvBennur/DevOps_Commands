@@ -1,0 +1,11 @@
+---
+# Run: ansible-playbook examples/create_directories.yml -i inventory.ini
+- name: Create directories
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure application directories exist
+      ansible.builtin.file:
+        path: /opt/myapp/releases
+        state: directory
+        mode: '0755'

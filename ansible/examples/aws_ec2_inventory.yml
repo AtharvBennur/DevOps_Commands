@@ -1,0 +1,10 @@
+---
+# Run: ansible-inventory -i examples/aws_ec2_inventory.yml --list
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-east-1
+filters:
+  tag:Environment: dev
+hostvars_extras:
+  - instance_id
+  - public_ip_address
